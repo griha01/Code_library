@@ -58,20 +58,40 @@ public:
 		for (temp = this->next; i < n; temp = temp->next, i++);
 		return temp;
 	}
+	list* search_first(int n)
+	{
+		list* temp(0);
+		temp = this->next;
+		while (temp->a != n)
+		{
+			temp = temp->next;
+		}
+		return temp;
+	}
+	list* search_last(int n) // недоделан
+	{
+		list* temp(0);
+		temp = this->prev;
+		while (temp->a != n)
+		{
+			temp = temp->prev;
+		}
+		return temp;
+	}
 	void Delete(int n)
 	{
-			list* temp = search(n);
+			list* temp = search_last(n);
 			list* temp_next = temp->next;
 			list* temp_prev = temp->prev;
 			
 
 			list* head = this;
-			if (temp->prev == NULL)
+			if (this->next == temp)
 			{
 				head->next = temp_next;
 				temp_next->prev = NULL;
 			}
-			if (temp->next == NULL)
+			else if (temp->next == NULL)
 			{
 				head->prev = temp_prev;
 				temp_prev->next = NULL;
@@ -80,7 +100,6 @@ public:
 			{
 				temp_prev->next = temp_next;
 				temp_next->prev = temp_prev;
-
 			}
 	}
 };
@@ -89,14 +108,16 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	list head(0);
-
+	head.add(8);
 	head.add(22);
 	head.add(6);
+	head.add(22);
 	head.add(4);
 	
-	head.show();
+	//head.show();
 
-	head.Delete(4);
+
+	head.Delete(22);
 
 	head.show();
 	//head.show();
