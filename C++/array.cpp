@@ -5,7 +5,7 @@
 using namespace std;
 class list
 {
-private:
+protected:
 	double a;
 	list* next;
 	list* prev;
@@ -22,20 +22,20 @@ public:
 		next = NULL;
 		prev = NULL;
 	}
-	list(double a, list* head)
+	void add(double a)
 	{
 		list* p = new list(a);
-		if (head->next == NULL)
+		if (next)
 		{
-			head->next = p;
-			head->prev = p;
+			next->prev = p;
+			p->next = next;
+			next = p;
+
 		}
 		else
 		{
-			p->next = head->next;
-			head->next = p;
-			list* q = p->next;
-			q->prev = p;
+			next = p;
+			next = p;
 		}
 	}
 	void show()
@@ -60,19 +60,28 @@ public:
 	}
 	void Delete(int n)
 	{
-		list* temp = search(n);
-		list* temp_next = temp->next;
-		list* temp_prev = temp->prev;
-		if (temp->next != NULL)
-		{
-			temp_next->prev = temp_prev;
-			cout << "TEST_next" << endl;
-		}
-		if (temp->prev != NULL) 
-		{
-			temp_prev->next = temp_next;
-			cout << "TEST_prev" << endl;
-		}
+			list* temp = search(n);
+			list* temp_next = temp->next;
+			list* temp_prev = temp->prev;
+			
+
+			list* head = this;
+			if (temp->prev == NULL)
+			{
+				head->next = temp_next;
+				temp_next->prev = NULL;
+			}
+			if (temp->next == NULL)
+			{
+				head->prev = temp_prev;
+				temp_prev->next = NULL;
+			}
+			else
+			{
+				temp_prev->next = temp_next;
+				temp_next->prev = temp_prev;
+
+			}
 	}
 };
 int main()
@@ -80,13 +89,17 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	list head(0);
-	list A1(22,&head);
-	list A2(6, &head);
-	list A3(4, &head);
-	head.show();
-	head.Delete(1);
+
+	head.add(22);
+	head.add(6);
+	head.add(4);
+	
 	head.show();
 
+	head.Delete(4);
+
+	head.show();
+	//head.show();
 	system("pause");
 	return 0;
 }
