@@ -4,14 +4,20 @@
 
 using namespace std;
 
-bool get(double* A, int size,int &tail,int head,double a)
+bool get(double* A, int size,int &tail,int head,double &a)
 {
 	if (head == 0 && tail == 0) return false;
 
 }
-bool set(double* A, int size, int& tail, int head, double a)
+bool set(double a,double* A,int tail, int &head, int N)
 {
-	return true;
+	if (head != tail)
+	{
+		A[head++] = a;
+		if (head == N) head = 0;
+		return true;
+	}
+	return false;
 }
 void show(double* A,int tail,int head,int N) {
 	while (tail != head )
@@ -28,5 +34,9 @@ int main()
 	double A[N] = {88,99, -9, -10, 33, 77};
 	int tail = 4, head = 2;
 	show(A, tail, head, N);
+	cout << endl <<set(10, A, tail, head,N) << endl;
+	cout << endl;
+	show(A, tail, head, N);
+
 	system("pause");
 }
