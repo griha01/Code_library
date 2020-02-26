@@ -52,6 +52,7 @@ int main()
 	//(-2)-полный,
     //(-1)-пустой,
 	//(0) -полный
+	cout << "1 часть!================================" << endl;
 	show(C, N, flag, tail, head);
 	cout << "flag:" << flag;
 	cout << " head:" << head;
@@ -59,16 +60,20 @@ int main()
 	get(C, N, flag, tail, head, number);
 	cout << "Number: " << number << endl;
 	//get(C, N, flag, tail, head, number);
+	cout << "2 часть!================================" << endl;
 	set(C, N, flag, tail, head, 11);
 	set(C, N, flag, tail, head, 22);
 	set(C, N, flag, tail, head, 33);
 	set(C, N, flag, tail, head, 44);
 	set(C, N, flag, tail, head, 55);
 	set(C, N, flag, tail, head, 66);
+	set(C, N, flag, tail, head, 77);
 	cout << "flag:" << flag;
 	cout << " head:" << head;
 	cout << " tail:" << tail << endl;
-
+	cout << "3 часть!================================" << endl;
+	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
 	get(C, N, flag, tail, head, number);
 	cout << "Number: " << number << endl;
 	get(C, N, flag, tail, head, number);
