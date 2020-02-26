@@ -14,23 +14,11 @@ void set(double* A, int N, int& flag, int tail, int& head, double a)
 
 void get(double* A, int N, int& flag, int& tail, int head, double& a)
 {
-	if (flag == -1)return;
-	if (flag == -2) {
-		a = A[tail++];
-		if (tail == N)tail = 0;
-		flag = 0;
-	}
-	if (flag == 0) {
-		a = A[tail++];
-		if (tail == N)tail = 0;
-		if (tail == head) flag = -1;
-	}
-/*
+
 	if (flag == -1)return;
 	a = A[tail++];
 	if (tail == N)tail = 0;
-	flag = (tail == head) ? -1:0
-	*/
+	flag = (tail == head) ? -1 : 0;
 
 }
 void show(double* A, int N, int flag, int tail,int head) {
@@ -56,28 +44,44 @@ int main()
 	const int N = 6;
 	double number = 0;
 	int flag = 0;
-	double A[N] = {88,99, -9, -10, 33, 77};
 	int tail = 4, head = 2;
-	show(A, N, flag, tail,head);
 
-	double B[N] = { 88,99, -9, -10, 33, 77 };
-	show(B, N, -2, 3, 3);
-
-	double C[N] = { 88,99, -9, -10, 33, 77 };
+	tail = 4, head = 4;
+	double C[N] = { 33, 44, 0, 0, 11, 22 };
 	flag = -1;
-	head = tail = 5;
-	set(C, N, flag, tail, head, 10);
+	//(-2)-полный,
+    //(-1)-пустой,
+	//(0) -полный
 	show(C, N, flag, tail, head);
+	cout << "flag:" << flag;
+	cout << " head:" << head;
+	cout << " tail:" << tail << endl;
+	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
+	//get(C, N, flag, tail, head, number);
+	set(C, N, flag, tail, head, 11);
+	set(C, N, flag, tail, head, 22);
+	set(C, N, flag, tail, head, 33);
+	set(C, N, flag, tail, head, 44);
+	set(C, N, flag, tail, head, 55);
+	set(C, N, flag, tail, head, 66);
+	cout << "flag:" << flag;
+	cout << " head:" << head;
+	cout << " tail:" << tail << endl;
 
 	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
+	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
+	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
+	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
+	get(C, N, flag, tail, head, number);
+	cout << "Number: " << number << endl;
 	show(C, N, flag, tail, head);
-	cout << "Number:" << number << endl;
-	/*cout << endl <<set(A,N, tail, head,10) << endl;
-	cout << endl;
-	show(A, tail, head, N);
-	cout << endl << get(A, N, tail, head, number) << endl;
-	cout << endl;
-	show(A, tail, head, N);
-	cout << endl;*/
+	cout << "flag:" << flag;
+	cout << " head:" << head;
+	cout << " tail:" << tail << endl;
 	system("pause");
 }
