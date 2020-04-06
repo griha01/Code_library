@@ -22,7 +22,7 @@ CREATE TABLE `Ингредиенты`(
 	`№ рецепта` INT NOT NULL,
 	`Номенклатурный №` INT NOT NULL,
 	`Количество` float NOT NULL,
-	PRIMARY KEY (`№ рецепта`,Номенклатурный №`),
+	PRIMARY KEY (`№ рецепта`,`Номенклатурный №`),
 	FOREIGN KEY (`Номенклатурный №`) REFERENCES `Продукты` (`№ позиции`) ON UPDATE CASCADE ON DELETE restrict,
 	FOREIGN KEY (`№ рецепта`) REFERENCES `Рецепты` (`№ рецепта`) ON UPDATE CASCADE ON DELETE restrict
 );
@@ -56,7 +56,7 @@ create function getCount(number int) returns int
 deterministic
 begin
 declare s int;
-select sum(`№ рецепта`) into s from `Ингредиенты` where `№ рецепта`=number;
+select count(`№ рецепта`) into s from `Ингредиенты` where `№ рецепта`=number;
 return ifnull(s, 0);
 end//
 delimiter ;	
