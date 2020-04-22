@@ -1,16 +1,24 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace SharpLabs
 {
+
+
     class Program
     {
         static void Main(string[] args)
         {
-            Еquation test1= new Еquation(3,3,2);
-            Еquation test2 = new Еquation(2,4,1);
-            test1.Multiplication(test2);
+            float[] array = {3.5f, 1.4f, -2f, 7f};
+            ShowArray(array);
+            CountNegativeElements(array);
+            SumAfterFirstElement(array);
+            СhangeNegativeElements(array);
+            ShowArray(array);
             
+
         }
+        #region 1 lab
         static void Lab_1()
         {
             double m = 10;
@@ -20,6 +28,8 @@ namespace SharpLabs
             Console.WriteLine(z1);
             Console.WriteLine(z2);
         }
+        #endregion 
+        #region 2 lab
         static void Lab_2(double x)
         {
             double y;
@@ -47,6 +57,8 @@ namespace SharpLabs
                 Console.WriteLine(FormattableString.Invariant($"x = {x} y = {y}"));
             }
         }
+        #endregion  
+        #region 2.1 lab
         static bool Lab_21(double x,double y)
         {
             int R = 4;
@@ -63,6 +75,8 @@ namespace SharpLabs
             }
             return false;
         }
+        #endregion  
+        #region 3.1 lab
         static void Lab_31()
         {
             for(double i =-5;i<=5; i+=0.5f)
@@ -70,6 +84,8 @@ namespace SharpLabs
                 Lab_2(i);
             }
         }
+        #endregion  
+        #region 3.2 lab
         static void Lab_32()
         {
             double x, y;
@@ -86,46 +102,91 @@ namespace SharpLabs
                 else Console.WriteLine("Промах");
             }
         }
+        #endregion
+
+        #region 5 lab
+
+        static void CountNegativeElements(float[] array)
+        {
+            int count = 0;
+            for (int i = 0; i < array.Length-1; i++)
+            {
+                if (array[i] < 0) count++;
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Отрицательных элементов: {count}");
+        }
+
+        static void SumAfterFirstElement(float[] array)
+        {
+            int index=0;
+
+            for (int i = 0; i < array.Length-1; i++) // Поиск минимального элемента по модулю
+            {
+                if (Math.Abs(array[i]) < Math.Abs(array[i + 1])) index = i;
+                else index = i + 1;
+            }
+            float sum = 0;
+            for (int i = index; i < array.Length; i++)
+            {
+                sum += Math.Abs(array[i]);
+            }
+            Console.WriteLine($"Сумма модулей элемента : {sum}");
+        }
+
+        static void ShowArray(float[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write($"|{array[i]}| ");
+            }
+        }
+
+        static void СhangeNegativeElements(float[] array)
+        {
+            for (int i = 0; i < array.Length-1; i++)
+            {
+                if (array[i] < 0) array[i] *= array[i];
+            }
+        }
+
+        #endregion
+
     }
+    #region 4 lab
     class Еquation
     {
         double a, b, c, x;
-
-
-        double degree; // Степень многочлена
-        public Еquation(double a,double b,double c)
+        public Еquation(double a,double b,double c) // Стандартный констуктор класса Еquation
         {
             this.a = a;
             this.b = b;
             this.c = c;
         }
-        public void Show()
+        public void Show() // Вывод многочлена
         {
             Console.WriteLine($"{a}x^2+{b}x+{c}");
         }
-        public void Result(double x)
+        public void Result(double x) // Вывод значения многочлена
         {
             Console.WriteLine($"Значение многочлена:{a*Math.Pow(x,2)+b*x+c}");
         }
-        public Еquation Addition(Еquation B)
-        {
-            Еquation temp = new Еquation(0,0,0);
-            temp.a=a + B.a;
-            temp.b=b + B.b;
-            temp.c=c + B.c;
-            return temp;
-        }
-        public Еquation Subtraction(Еquation B)
+        public static Еquation operator -(Еquation equation1,Еquation equation2)// Оператор вычитания многочлена
         {
             Еquation temp = new Еquation(0, 0, 0);
-            temp.a = a - B.a;
-            temp.b = b - B.b;
-            temp.c = c - B.c;
+            temp.a = equation1.a - equation2.a;
+            temp.b = equation1.b - equation2.b;
+            temp.c = equation1.c - equation2.c;
             return temp;
         }
-        public void Multiplication(Еquation B)
+        public static Еquation operator +(Еquation equation1,Еquation equation2) // Оператор суммы многочлена
         {
-            Console.WriteLine($"{a*B.a}x^4 + {B.a*b + a * B.b}x^3 +{}");
+            Еquation temp = new Еquation(0, 0, 0);
+            temp.a = equation1.a + equation2.a;
+            temp.b = equation1.b + equation2.b;
+            temp.c = equation1.c + equation2.c;
+            return temp;
         }
     }
+    #endregion
 }
