@@ -1,5 +1,5 @@
-Create database Base777 COLLATE='utf8_unicode_ci';
-use Base777;
+Create database var2 COLLATE='utf8_unicode_ci';
+use var2;
 DROP TABLE IF EXISTS `Ингредиенты`;
 DROP TABLE IF EXISTS `Рецепты`;
 DROP TABLE IF EXISTS `Продукты`;
@@ -97,7 +97,76 @@ delimiter ;
 call setCursor();
 select * from `Рецепты`;
 
+/*5 */
+DELIMITER $$
+CREATE TRIGGER `deleteИнгредиенты` 
+AFTER DELETE ON `Ингредиенты` FOR EACH ROW
+BEGIN
+	UPDATE `Рецепты` 
+	SET `Количество ингредиентов` = `Количество ингредиентов`-1
+	WHERE `№ рецепта` = OLD.`№ рецепта`;
+END$$
+DELIMITER ;
 
+delete from `Ингредиенты` where `№ рецепта` = 103;
+select * from `Ингредиенты`;
+select * from `Рецепты`
 
+/*6*/
+DELIMITER $$
+CREATE TRIGGER `insertИнгредиенты`
+AFTER INSERT ON `Ингредиенты` FOR EACH ROW
+BEGIN 
+	call setCursor();
+END$$
+DELIMITER ;
 
+/*7*/
+delimiter //
+create trigger `updateИнгредиенты` 
+after update on `Ингредиенты` for each row
+begin
+    if OLD.`№ рецепта` != NEW.`№ рецепта` then 
+        call setCursor();
+	end if;
+end//
+delimiter ;
 
+/* 8 */
+create user 'administrator'@'localhost' identified by '123';
+create user 'director'@'localhost' identified by '123';
+create user 'worker'@'localhost' identified by '123';
+create user 'visitor'@'localhost';
+
+/* 9 */
+grant all privileges on `var2`.* 
+to 'administrator'@'localhost' with grant option;
+flush privileges;
+
+/* 10 */
+grant all privileges on `var2`.* 
+to 'director'@'localhost';
+revoke create, alter, drop on `work_3`.* 
+from 'director'@'localhost';
+flush privileges;
+
+/* -11- */
+grant insert, select, update on `var2`.`Продукты`
+to 'worker'@'localhost';
+grant insert, select, update(`Количество ингредиентов`,`Название блюда`) on `var2`.`Рецепты` 
+to 'worker'@'localhost';
+grant insert, select on `var2`.`Ингредиенты` 
+to 'worker'@'localhost';
+grant update (`Количество`)`var2`.`Ингредиенты` 
+to 'worker'@'localhost';
+
+/* -12- */
+
+create view `просмотр` as
+select `рецепты`.`№ рецепта`, `рецепты`.`название блюда`,`продукты`.`наименование продукта`,`продукты`.`единицы измерения`,`ингредиенты`.`количество`
+from `продукты` inner join(`рецепты` inner join `ингредиенты`on `рецепты`.`№ рецепта`=`ингредиенты`.`№ рецепта`) on `продукты`.`№ позиции` = `ингредиенты`.`номенклатурный №`;
+
+/* 13 */
+
+grant select on `var2`.`просмотр` to
+'visitor'@'localhost';
