@@ -50,7 +50,8 @@ INSERT INTO `Ингредиенты`(`№ рецепта`,`Номенклату�
 	(101,106,3),
 	(101,107,0.150),
 	(101,108,0.300);
-	
+
+/* 2 */
 delimiter //
 create function getCount(number int) returns int
 deterministic
@@ -63,3 +64,40 @@ delimiter ;
 	
 select * from `Ингредиенты`;
 select getCount(103);
+
+/* 3 */
+delimiter //
+create procedure setCount()
+begin
+update `Рецепты` set `Количество`=getCount(`№ рецепта`);
+end//
+delimiter ;
+
+CALL setCount();
+SELECT * FROM `Рецепты`;
+
+/* 4 */
+delimiter // 
+create procedure `setCursor`() 
+BEGIN 
+	DECLARE n char(4);
+    DECLARE s, b INT default 0; 
+	DECLARE cur1 CURSOR FOR SELECT `№ рецепта`, count(`№ рецепта`) FROM `Ингредиенты` group by `№ рецепта`;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET b = 1; 
+    update `Рецепты` set `Количество ингредиентов`=0;
+	OPEN cur1; 
+    WHILE b = 0 DO 
+        FETCH cur1 INTO n, s; 
+		update `Рецепты` set `Количество ингредиентов`=s where `№ рецепта`=n;
+    END WHILE; 
+    CLOSE cur1; 
+END // 
+delimiter ;
+
+call setCursor();
+select * from `Рецепты`;
+
+
+
+
+
