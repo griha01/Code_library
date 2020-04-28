@@ -117,7 +117,9 @@ DELIMITER $$
 CREATE TRIGGER `insertИнгредиенты`
 AFTER INSERT ON `Ингредиенты` FOR EACH ROW
 BEGIN 
-	call setCursor();
+	UPDATE `Рецепты` 
+	SET `Количество ингредиентов` = `Количество ингредиентов`+1
+	WHERE `№ рецепта` = NEW.`№ рецепта`;
 END$$
 DELIMITER ;
 
@@ -127,7 +129,8 @@ create trigger `updateИнгредиенты`
 after update on `Ингредиенты` for each row
 begin
     if OLD.`№ рецепта` != NEW.`№ рецепта` then 
-        call setCursor();
+       UPDATE `Рецепты` SET `Количество ингредиентов` = `Количество ингредиентов`+1 where `№ рецепта` = NEW.`№ рецепта`;
+	   UPDATE `Рецепты` SET `Количество ингредиентов` = `Количество ингредиентов`-1 where `№ рецепта` = Old.`№ рецепта`;
 	end if;
 end//
 delimiter ;
@@ -140,13 +143,13 @@ create user 'visitor'@'localhost';
 
 /* 9 */
 grant all privileges on `var2`.* 
-to 'administrator'@'localhost' with grant option;
+to 'administrator'@'localhost';
 flush privileges;
 
 /* 10 */
 grant all privileges on `var2`.* 
-to 'director'@'localhost';
-revoke create, alter, drop on `work_3`.* 
+to 'director'@'localhost' with grant option;
+revoke alter, drop on `var2`.* 
 from 'director'@'localhost';
 flush privileges;
 
